@@ -45,7 +45,7 @@
 // async function requestExchangeRate() {
 //   let promise = await fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
 //   let exchangeObject = await promise.json()
-    
+
 //     .then(data => {
 //       const exchangeRates = {};
 //       for (let rate of data) {
@@ -132,7 +132,108 @@
 //   return debtAmount;
 // }
 
-class Bill{
+// class Bill {
+//   constructor(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
+//     this.currency = currency;
+//     this.expirationDate = expirationDate;
+//     this.isActive = isActive;
+//     this.lastActiveDate = lastActiveDate;
+//     this.balance = balance;
+//     this.limit = limit || 0;
+//   }
+
+//   getCreditDebt() {
+//     if (this.limit < this.balance) {
+//       return 0;
+//     }
+//     return this.limit - this.balance;
+//   }
+
+//   getOwnMoney() {
+//     return this.balance;
+//   }
+// }
+
+// class Client {
+//   creditBills = [];
+//   debetBills = [];
+//   constructor(fullName, isActive, id) {
+//     this.fullName = fullName;
+//     this.isActive = isActive;
+//     this.id = id;
+//   }
+
+//   setCreditBill(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
+//     if (balance < 0 || limit < 0) {
+//       throw new Error('Balance or limit couldn\'t be negative');
+//     }
+//     this.creditBills.push(new Bill(currency, expirationDate, isActive, lastActiveDate, balance, limit));
+//   }
+
+//   setDebetBill(currency, expirationDate, isActive, lastActiveDate, balance) {
+//     if (balance < 0) {
+//       throw new Error('Balance couldn\'t be negative');
+//     }
+//     this.debetBills.push(new Bill(currency, expirationDate, isActive, lastActiveDate, balance));
+//   }
+// }
+// // Client.counter = 0;
+
+// class Bank {
+//   constructor() {
+//     this.clients = [];
+//     this.counter = 0;
+//   }
+
+
+//   addClient(fullName, isActive) {
+//     this.clients.push(new Client(fullName, isActive, this.counter++));
+//   }
+
+//   findClient(id) {
+//     for (let client of this.clients) {
+//       if (client.id === id) {
+//         return client;
+//       }
+//     }
+//   }
+
+//   async requestExchangeRate() {
+//     let promise = await fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+//     let exchangeObject = await promise.json()
+
+//       .then(data => {
+//         const exchangeRates = {};
+//         for (let rate of data) {
+//           exchangeRates[rate.ccy] = rate;
+//         }
+//         if (!exchangeRates['UAH']) {
+//           exchangeRates['UAH'] = { sale: '1' };
+//         }
+//         return exchangeRates;
+//       })
+
+//       .catch(() => {
+//         throw new Error('Data download error');
+//       });
+// /* ???????????????????????? */    return exchangeObject;
+//   }
+// }
+
+// let bank = new Bank;
+// bank.addClient('Petr Petrovich Petrushenko', true);
+// bank.findClient(0).setCreditBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000)
+// bank.addClient('Misha Grshin', false);
+// let Petr = new Client('Petr Petrovich Petrushenko', true);
+// Petr.setCreditBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000);
+// Petr.setDebetBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000);
+// let Misha = new Client('Misha Grshin', false);
+// console.log(Petr);
+// console.log(bank.findClient(0));
+// console.log(bank.requestExchangeRate());
+// console.log(bank);
+
+class Bill {
   constructor(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
     this.currency = currency;
     this.expirationDate = expirationDate;
@@ -141,50 +242,33 @@ class Bill{
     this.balance = balance;
     this.limit = limit || 0;
   }
-
-  getCreditDebt() {
-    if (this.limit < this.balance) {
-      return 0;
-    }
-    return this.limit - this.balance;
-  }
-
-  getOwnMoney() {
-    return this.balance;
-  }
 }
 
-class Client{
-  creditBills = [];
-  debetBills = [];
+class Client {
   constructor(fullName, isActive, id) {
     this.fullName = fullName;
     this.isActive = isActive;
     this.id = id;
+    this.joininDate = new Date();
+    this.creditBills = [];
+    this.debetBills = [];
   }
 
-  setCreditBill(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
-    if (balance < 0 || limit < 0) {
-      throw new Error('Balance or limit couldn\'t be negative');
-    }
+  addDebetBill(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
+    this.debetBills.push(new Bill(currency, expirationDate, isActive, lastActiveDate, balance, limit));
+  }
+
+  addCreditBill(currency, expirationDate, isActive, lastActiveDate, balance, limit) {
     this.creditBills.push(new Bill(currency, expirationDate, isActive, lastActiveDate, balance, limit));
   }
-
-  setDebetBill(currency, expirationDate, isActive, lastActiveDate, balance) {
-    if (balance < 0) {
-      throw new Error('Balance couldn\'t be negative');
-    }
-    this.debetBills.push(new Bill(currency, expirationDate, isActive, lastActiveDate, balance));
-  }
 }
-// Client.counter = 0;
 
-class Bank{
+class Bank {
+
   constructor() {
-    this.clients = [];
     this.counter = 0;
+    this.clients = [];
   }
-
 
   addClient(fullName, isActive) {
     this.clients.push(new Client(fullName, isActive, this.counter++));
@@ -198,37 +282,16 @@ class Bank{
     }
   }
 
-  async requestExchangeRate() {
-    let promise = await fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
-    let exchangeObject = await promise.json()
-      
-      .then(data => {
-        const exchangeRates = {};
-        for (let rate of data) {
-          exchangeRates[rate.ccy] = rate;
-        }
-        if (!exchangeRates['UAH']) {
-          exchangeRates['UAH'] = { sale: '1' };
-        }
-        return exchangeRates;
-      })
+  calculateMoneyAmount
 
-      .catch(() => {
-        throw new Error('Data download error');
-      });
-/* ???????????????????????? */    return exchangeObject;
-  }
+  calculateDebtAmount
+
+  calculateAccountTypeDebt
+
 }
 
-let bank = new Bank;
+let bank = new Bank();
 bank.addClient('Petr Petrovich Petrushenko', true);
-bank.findClient(0).setCreditBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000)
 bank.addClient('Misha Grshin', false);
-// let Petr = new Client('Petr Petrovich Petrushenko', true);
-// Petr.setCreditBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000);
-// Petr.setDebetBill('USD', '29.09.2029', true, '20.02.2022', 10000, 10000);
-// let Misha = new Client('Misha Grshin', false);
-// console.log(Petr);
-// console.log(bank.findClient(0));
-// console.log(bank.requestExchangeRate());
-// console.log(bank);
+bank.findClient(1).addCreditBill('USD', '20.2.1998', true, '12', 1000, 1200)
+console.log(bank);
