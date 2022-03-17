@@ -79,33 +79,29 @@ class Bank {
     await this.requestExchangeRate().then(exchangeRates => {
 
       for (let client of this.clients) {
-        if (client.debetBills.length) {
 
-          for (let account of client.debetBills) {
-            if (account.currency === 'USD') {
-              allMoney += account.balance;
-              continue;
-            }
-            let nationalValue = account.balance * exchangeRates[account.currency].sale;
-            allMoney += nationalValue / exchangeRates['USD'].buy;
+        for (let account of client.debetBills) {
+          if (account.currency === 'USD') {
+            allMoney += account.balance;
+            continue;
           }
+          let nationalValue = account.balance * exchangeRates[account.currency].sale;
+          allMoney += nationalValue / exchangeRates['USD'].buy;
         }
 
-        if (client.creditBills.length) {
-          for (let account of client.creditBills) {
+        for (let account of client.creditBills) {
 
-            let actualBalance = account.balance - account.limit;
-            if (account.balance < account.limit) {
-              actualBalance = account.limit - account.balance;
-            }
-
-            if (account.currency === 'USD') {
-              allMoney += actualBalance;
-              continue;
-            }
-            let nationalValue = actualBalance * exchangeRates[account.currency].sale;
-            allMoney += nationalValue / exchangeRates['USD'].buy;
+          let actualBalance = account.balance - account.limit;
+          if (account.balance < account.limit) {
+            actualBalance = account.limit - account.balance;
           }
+
+          if (account.currency === 'USD') {
+            allMoney += actualBalance;
+            continue;
+          }
+          let nationalValue = actualBalance * exchangeRates[account.currency].sale;
+          allMoney += nationalValue / exchangeRates['USD'].buy;
         }
       }
     });
@@ -134,10 +130,8 @@ class Bank {
     await this.requestExchangeRate().then(exchangeRates => {
       for (let client of this.clients) {
         if (client.isActive === isActive) {
-          if (client.creditBills.length) {
-            for (let account of client.creditBills) {
-              debtAmount += this.countDebt(account, exchangeRates);
-            }
+          for (let account of client.creditBills) {
+            debtAmount += this.countDebt(account, exchangeRates);
           }
         }
       }
@@ -169,7 +163,7 @@ class Bank {
           exchangeRates[rate.ccy] = rate;
         }
         if (!exchangeRates['UAH']) {
-          exchangeRates['UAH'] = { sale: '1' };
+          exchangeRates['UAH'] = { sale: 1 };
         }
         return exchangeRates;
       })
