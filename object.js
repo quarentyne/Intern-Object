@@ -134,7 +134,7 @@ class Bank {
     await this.requestExchangeRate().then(exchangeRates => {
       for (let client of this.clients) {
         if (client.isActive === isActive) {
-          if (client.creditBills.length > 0) {
+          if (client.creditBills.length) {
             for (let account of client.creditBills) {
               debtAmount += this.countDebt(account, exchangeRates);
             }
