@@ -20,9 +20,27 @@ const clientActive = document.createElement('p');
 clientNameLine.append(clientActive);
 clientActive.innerHTML = 'Active';
 
-const clientBills = document.createElement('div');
-client.append(clientBills);
-clientBills.innerHTML = 'Bills:';
+const clientDebetBills = document.createElement('ul');
+client.append(clientDebetBills);
+clientDebetBills.innerHTML = 'Debet Bills:';
+clientDebetBills.style.margin = '0px';
+clientDebetBills.style.padding = '0px';
+
+const clientDebetBill = document.createElement('li');
+clientDebetBills.append(clientDebetBill);
+clientDebetBill.style.marginLeft = '15px';
+clientDebetBill.innerHTML = 'bill'
+
+const clientCreditBills = document.createElement('ul');
+client.append(clientCreditBills);
+clientCreditBills.innerHTML = 'Credit Bills:';
+clientCreditBills.style.margin = '0px';
+clientCreditBills.style.padding = '0px';
+
+const clientCreditBill = document.createElement('li');
+clientCreditBills.append(clientCreditBill);
+clientCreditBill.style.marginLeft = '15px';
+clientCreditBill.innerHTML = 'bill'
 
 const clientFooter = document.createElement('div');
 client.append(clientFooter);
