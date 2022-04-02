@@ -16,7 +16,7 @@ class Client {
     this.fullName = fullName;
     this.isActive = isActive;
     this.id = id;
-    this.joininDate = new Date();
+    this.joinDate = new Date();
     this.creditBills = [];
     this.debetBills = [];
   }
