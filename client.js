@@ -77,4 +77,19 @@ function renderClient(place, clientCard) {
   const clientDelete = document.createElement('button');
   clientDelete.innerHTML = 'Delete';
   clientControl.append(clientDelete);
+
+  clientEdit.addEventListener('click', () => {
+    const changeName = document.createElement('input');
+    changeName.value = clientName.innerHTML;
+    clientName.innerHTML = '';
+    clientName.append(changeName);
+    clientEdit.innerHTML = 'Save';
+    clientEdit.addEventListener('click', () => {
+      clientCard.fullName = changeName.value;
+      // changeName.remove();
+      clientName.innerHTML = clientCard.fullName;
+      clientEdit.innerHTML = 'Edit';
+      // renderMainContent(bank.clients);
+    })
+  })
 }
