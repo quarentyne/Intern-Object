@@ -4,6 +4,7 @@ function renderClient(place, clientCard) {
   const client = document.createElement('div');
   client.style.background = 'white';
   client.style.width = '45%';
+  client.style.maxHeight = '45%';
   client.style.paddingLeft = '15px';
   client.style.paddingRight = '15px';
   client.style.border = 'solid black 2px'
@@ -35,7 +36,7 @@ function renderClient(place, clientCard) {
   for (let debetBill of clientCard.debetBills) {
     const clientDebetBill = document.createElement('li');
     clientDebetBill.style.marginLeft = '15px';
-    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills);
+    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard);
   }
 
   const clientCreditBills = document.createElement('ul');
@@ -47,7 +48,7 @@ function renderClient(place, clientCard) {
   for (let creditBill of clientCard.creditBills) {
     const clientCreditBill = document.createElement('li');
     clientCreditBill.style.marginLeft = '15px';
-    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills);
+    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard);
   }
 
   const clientFooter = document.createElement('div');
@@ -84,12 +85,42 @@ function renderClient(place, clientCard) {
     clientName.innerHTML = '';
     clientName.append(changeName);
     clientEdit.innerHTML = 'Save';
+
+    const changeClientActive = document.createElement('select');
+    const changeIsActive = document.createElement("option");
+    const changeIsInactive = document.createElement("option");
+
+    changeIsActive.value = 'true';
+    changeIsActive.text = 'Active';
+    changeIsInactive.value = 'false';
+    changeIsInactive.text = 'Inactive';
+
+    changeClientActive.add(changeIsActive);
+    changeClientActive.add(changeIsInactive);
+    clientActive.innerHTML = '';
+    clientActive.append(changeClientActive);
+
     clientEdit.addEventListener('click', () => {
+      if (changeClientActive.value === 'true') {
+        clientCard.isActive = true;
+      } else {
+        clientCard.isActive = false;
+      }
+
       clientCard.fullName = changeName.value;
-      // changeName.remove();
-      clientName.innerHTML = clientCard.fullName;
-      clientEdit.innerHTML = 'Edit';
-      // renderMainContent(bank.clients);
+      mainContent.innerHTML = '';
+      renderMainContent(bank.clients);
     })
+  })
+
+  clientDelete.addEventListener('click', () => {
+    for (let i = 0; i < bank.clients.length; i++) {
+      if (bank.clients[i] === clientCard) {
+        bank.clients.splice(i, 1);
+        mainContent.innerHTML = '';
+        renderMainContent(bank.clients);
+        break;
+      }
+    }
   })
 }
