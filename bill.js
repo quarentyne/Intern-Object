@@ -1,6 +1,6 @@
 'use strict';
 
-function renderBill(clientBill, place, client) {
+function renderBill(clientBill, place, bills) {
   const bill = document.createElement('div');
   bill.style.width = '95%';
   bill.style.paddingLeft = '5px';
@@ -121,18 +121,9 @@ function renderBill(clientBill, place, client) {
   })
 
   billDelete.addEventListener('click', () => {
-    for (let i = 0; i < client.debetBills.length; i++) {
-      if (client.debetBills[i] === clientBill) {
-        client.debetBills.splice(i, 1);
-        mainContent.innerHTML = '';
-        renderMainContent(bank.clients);
-        return;
-      }
-    }
-
-    for (let i = 0; i < client.creditBills.length; i++) {
-      if (client.creditBills[i] === clientBill) {
-        client.creditBills.splice(i, 1);
+    for (let i = 0; i < bills.length; i++) {
+      if (bills[i] === clientBill) {
+        bills.splice(i, 1);
         mainContent.innerHTML = '';
         renderMainContent(bank.clients);
         return;

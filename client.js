@@ -36,7 +36,7 @@ function renderClient(place, clientCard) {
   for (let debetBill of clientCard.debetBills) {
     const clientDebetBill = document.createElement('li');
     clientDebetBill.style.marginLeft = '15px';
-    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard);
+    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard.debetBills);
   }
 
   const clientCreditBills = document.createElement('ul');
@@ -48,7 +48,7 @@ function renderClient(place, clientCard) {
   for (let creditBill of clientCard.creditBills) {
     const clientCreditBill = document.createElement('li');
     clientCreditBill.style.marginLeft = '15px';
-    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard);
+    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard.creditBills);
   }
 
   const clientFooter = document.createElement('div');
