@@ -81,7 +81,7 @@ function renderClient(place, clientCard) {
 
   clientEdit.addEventListener('click', () => {
     const changeName = document.createElement('input');
-    changeName.value = clientName.innerHTML;
+    changeName.value = clientCard.fullName;
     clientName.innerHTML = '';
     clientName.append(changeName);
     clientEdit.innerHTML = 'Save';
@@ -101,6 +101,11 @@ function renderClient(place, clientCard) {
     clientActive.append(changeClientActive);
 
     clientEdit.addEventListener('click', () => {
+      if (!checkName.test(changeName.value)) {
+        displayError('Name');
+        return;
+      }
+
       if (changeClientActive.value === 'true') {
         clientCard.isActive = true;
       } else {
