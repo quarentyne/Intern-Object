@@ -67,10 +67,12 @@ function renderBill(clientBill, place, bills) {
     const editLimit = document.createElement('input');
     const editCurrency = document.createElement('input');
     const editExpiration = document.createElement('input');
+    const editActivity = document.createElement('input');
     editBalance.style.width = '30%';
     editLimit.style.width = '30%';
     editCurrency.style.width = '25%';
     editExpiration.style.width = '40%';
+    editActivity.style.width = '40%';
     billEdit.innerHTML = 'Save';
 
     const editBalanceActive = document.createElement('select');
@@ -100,6 +102,10 @@ function renderBill(clientBill, place, bills) {
     billExpiration.innerHTML = 'Expiration date: ';
     billExpiration.append(editExpiration);
 
+    editActivity.value = clientBill.lastActiveDate;
+    billLastActive.innerHTML = 'Last active date: ';
+    billLastActive.append(editActivity);
+
     billIsActive.innerHTML = 'Bill is ';
     billIsActive.append(editBalanceActive);
 
@@ -108,6 +114,7 @@ function renderBill(clientBill, place, bills) {
       clientBill.limit = editLimit.value;
       clientBill.currency = editCurrency.value;
       clientBill.expirationDate = editExpiration.value;
+      clientBill.lastActiveDate = editActivity.value;
 
       if (editBalanceActive.value === 'true') {
         clientBill.isActive = true;

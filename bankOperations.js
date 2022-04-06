@@ -109,7 +109,15 @@ calculateAmountButton.innerHTML = 'Calculate';
 const calculateAmountResult = document.createElement('output');
 calculateAmountResult.innerHTML = '0$'
 
+const errorPlace = document.createElement('p');
+errorPlace.style.fontSize = '30px';
+
 newClientButton.addEventListener('click', () => {
+  if (!checkName.test(newClientName.value)) {
+    displayError('Name');
+    return;
+  }
+
   if (newClientIsActive.value === 'true') {
     bank.addClient(newClientName.value, true)
   }
@@ -122,15 +130,32 @@ newClientButton.addEventListener('click', () => {
 })
 
 addBillButton.addEventListener('click', () => {
+  if (!checkID.test(addBillID.value)) {
+    displayError('ID');
+    return;
+  }
+  if (!checkMoney.test(addBillBalance.value) || !checkMoney.test(addBillLimit.value)) {
+    displayError('Balance or Limit');
+    return;
+  }
+  if (!checkCurrency.test(addBillCurrency.value)) {
+    displayError('Currency');
+    return;
+  }
+  if (!checkDate.test(addBillLastActive.value) || !checkDate.test(addBillExpirationDate.value)) {
+    displayError('Date');
+    return;
+  }
+
   let isActiveBill = true;
   if (addBillIsActive.value === 'false') {
     isActiveBill = false;
   }
   if (addBillType.value === 'debet') {
-    bank.findClient(parseInt(addBillID.value)).addDebetBill(addBillCurrency.value, addBillExpirationDate.value,
+    bank.findClient(parseInt(addBillID.value)).addDebetBill(addBillCurrency.value.toUpperCase(), addBillExpirationDate.value,
       isActiveBill, addBillLastActive.value, parseInt(addBillBalance.value));
   } else {
-    bank.findClient(parseInt(addBillID.value)).addCreditBill(addBillCurrency.value, addBillExpirationDate.value,
+    bank.findClient(parseInt(addBillID.value)).addCreditBill(addBillCurrency.value.toUpperCase(), addBillExpirationDate.value,
       isActiveBill, addBillLastActive.value, parseInt(addBillBalance.value), parseInt(addBillLimit.value))
   }
 
@@ -178,4 +203,5 @@ function renderSideContent(place) {
   calculateAmount.append(calculateAmountMenu);
   calculateAmount.append(calculateAmountButton);
   calculateAmount.append(calculateAmountResult);
+  operationBlock.append(errorPlace);
 }
