@@ -110,6 +110,19 @@ function renderBill(clientBill, place, bills) {
     billIsActive.append(editBalanceActive);
 
     billEdit.addEventListener('click', () => {
+      if (!checkMoney.test(editBalance.value) || !checkMoney.test(editLimit.value)) {
+        displayError('Balance or Limit');
+        return;
+      }
+      if (!checkCurrency.test(editCurrency.value)) {
+        displayError('Currency');
+        return;
+      }
+      if (!checkDate.test(editActivity.value) || !checkDate.test(editExpiration.value)) {
+        displayError('Date');
+        return;
+      }
+
       clientBill.bill = editBalance.value;
       clientBill.limit = editLimit.value;
       clientBill.currency = editCurrency.value;
