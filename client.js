@@ -1,6 +1,10 @@
 'use strict';
 
-function renderClient(place, clientCard) {
+import { renderBill } from './bill.js';
+import { renderMainContent, mainContent, errorPlace } from "./renderContent.js";
+import { displayError, checkName } from "./checking.js";
+
+export function renderClient(place, clientCard, bank) {
   const client = document.createElement('div');
   client.style.background = 'white';
   client.style.width = '45%';
@@ -36,7 +40,7 @@ function renderClient(place, clientCard) {
   for (let debetBill of clientCard.debetBills) {
     const clientDebetBill = document.createElement('li');
     clientDebetBill.style.marginLeft = '15px';
-    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard.debetBills);
+    clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard.debetBills, bank);
   }
 
   const clientCreditBills = document.createElement('ul');
@@ -48,7 +52,7 @@ function renderClient(place, clientCard) {
   for (let creditBill of clientCard.creditBills) {
     const clientCreditBill = document.createElement('li');
     clientCreditBill.style.marginLeft = '15px';
-    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard.creditBills);
+    clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard.creditBills, bank);
   }
 
   const clientFooter = document.createElement('div');
@@ -102,7 +106,7 @@ function renderClient(place, clientCard) {
 
     clientEdit.addEventListener('click', () => {
       if (!checkName.test(changeName.value)) {
-        displayError('Name');
+        displayError('Name', errorPlace);
         return;
       }
 
@@ -114,7 +118,7 @@ function renderClient(place, clientCard) {
 
       clientCard.fullName = changeName.value;
       mainContent.innerHTML = '';
-      renderMainContent(bank.clients);
+      renderMainContent(bank.clients, bank);
     })
   })
 
@@ -123,7 +127,7 @@ function renderClient(place, clientCard) {
       if (bank.clients[i] === clientCard) {
         bank.clients.splice(i, 1);
         mainContent.innerHTML = '';
-        renderMainContent(bank.clients);
+        renderMainContent(bank.clients, bank);
         break;
       }
     }

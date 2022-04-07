@@ -46,7 +46,7 @@ class Client {
   }
 }
 
-class Bank {
+export class Bank {
   constructor() {
     this.counter = 0;
     this.clients = [];

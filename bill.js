@@ -1,6 +1,9 @@
 'use strict';
 
-function renderBill(clientBill, place, bills) {
+import { displayError, checkMoney, checkCurrency, checkDate } from "./checking.js";
+import { renderMainContent, mainContent, errorPlace } from "./renderContent.js";
+
+export function renderBill(clientBill, place, bills, bank) {
   const bill = document.createElement('div');
   bill.style.width = '95%';
   bill.style.paddingLeft = '5px';
@@ -111,21 +114,21 @@ function renderBill(clientBill, place, bills) {
 
     billEdit.addEventListener('click', () => {
       if (!checkMoney.test(editBalance.value) || !checkMoney.test(editLimit.value)) {
-        displayError('Balance or Limit');
+        displayError('Balance or Limit', errorPlace);
         return;
       }
       if (!checkCurrency.test(editCurrency.value)) {
-        displayError('Currency');
+        displayError('Currency', errorPlace);
         return;
       }
       if (!checkDate.test(editActivity.value) || !checkDate.test(editExpiration.value)) {
-        displayError('Date');
+        displayError('Date', errorPlace);
         return;
       }
 
       clientBill.bill = editBalance.value;
       clientBill.limit = editLimit.value;
-      clientBill.currency = editCurrency.value;
+      clientBill.currency = editCurrency.value.toUpperCase();
       clientBill.expirationDate = editExpiration.value;
       clientBill.lastActiveDate = editActivity.value;
 
@@ -136,7 +139,7 @@ function renderBill(clientBill, place, bills) {
       }
 
       mainContent.innerHTML = '';
-      renderMainContent(bank.clients);
+      renderMainContent(bank.clients, bank);
     })
   })
 
@@ -145,7 +148,7 @@ function renderBill(clientBill, place, bills) {
       if (bills[i] === clientBill) {
         bills.splice(i, 1);
         mainContent.innerHTML = '';
-        renderMainContent(bank.clients);
+        renderMainContent(bank.clients, bank);
         return;
       }
     }
