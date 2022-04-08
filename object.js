@@ -7,7 +7,7 @@ class Bill {
     this.isActive = isActive;
     this.lastActiveDate = lastActiveDate;
     this.balance = balance;
-    this.limit = limit || 0;
+    this.limit = limit || null;
   }
 }
 

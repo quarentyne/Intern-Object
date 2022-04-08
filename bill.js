@@ -5,29 +5,24 @@ import { renderMainContent, mainContent, errorPlace } from "./renderContent.js";
 
 export function renderBill(clientBill, place, bills, bank) {
   const bill = document.createElement('div');
-  bill.style.width = '95%';
-  bill.style.paddingLeft = '5px';
-  bill.style.paddingRight = '5px';
-  bill.style.border = 'solid black 2px'
+  bill.classList.add('bill');
   place.append(bill);
 
   const billCurrent = document.createElement('div');
+  billCurrent.classList.add('bill__current');
   bill.append(billCurrent);
-  billCurrent.style.display = 'flex';
-  billCurrent.style.justifyContent = 'space-between';
 
   const billBalance = document.createElement('p');
-  billBalance.style.width = '25%';
   billCurrent.append(billBalance);
   billBalance.innerHTML = 'Balance: ' + clientBill.balance;
 
   const billLimit = document.createElement('p');
-  billLimit.style.width = '25%';
-  billCurrent.append(billLimit);
-  billLimit.innerHTML = 'Limit: ' + clientBill.limit;
+  if (clientBill.limit !== null) {
+    billCurrent.append(billLimit);
+    billLimit.innerHTML = 'Limit: ' + clientBill.limit;
+  }
 
   const billCurrency = document.createElement('p');
-  billCurrency.style.width = '25%';
   billCurrent.append(billCurrency);
   billCurrency.innerHTML = 'Currency: ' + clientBill.currency;
 
@@ -36,9 +31,8 @@ export function renderBill(clientBill, place, bills, bank) {
   bill.append(billExpiration);
 
   const billFooter = document.createElement('div');
+  billFooter.classList.add('bill__footer');
   bill.append(billFooter);
-  billFooter.style.display = 'flex';
-  billFooter.style.justifyContent = 'space-between';
 
   const billLastActive = document.createElement('p');
   billFooter.append(billLastActive);
@@ -53,9 +47,8 @@ export function renderBill(clientBill, place, bills, bank) {
   }
 
   const billControl = document.createElement('div');
+  billControl.classList.add('control');
   bill.append(billControl);
-  billControl.style.display = 'flex';
-  billControl.style.justifyContent = 'space-between';
 
   const billEdit = document.createElement('button');
   billEdit.innerHTML = 'Edit';
@@ -71,11 +64,6 @@ export function renderBill(clientBill, place, bills, bank) {
     const editCurrency = document.createElement('input');
     const editExpiration = document.createElement('input');
     const editActivity = document.createElement('input');
-    editBalance.style.width = '30%';
-    editLimit.style.width = '30%';
-    editCurrency.style.width = '25%';
-    editExpiration.style.width = '40%';
-    editActivity.style.width = '40%';
     billEdit.innerHTML = 'Save';
 
     const editBalanceActive = document.createElement('select');
@@ -93,9 +81,11 @@ export function renderBill(clientBill, place, bills, bank) {
     billBalance.innerHTML = 'Balance: ';
     billBalance.append(editBalance);
 
-    editLimit.value = clientBill.limit;
-    billLimit.innerHTML = 'Limit: ';
-    billLimit.append(editLimit);
+    if (clientBill.limit !== null) {
+      editLimit.value = clientBill.limit;
+      billLimit.innerHTML = 'Limit: ';
+      billLimit.append(editLimit);
+    }
 
     editCurrency.value = clientBill.currency;
     billCurrency.innerHTML = 'Currency: ';
@@ -113,6 +103,9 @@ export function renderBill(clientBill, place, bills, bank) {
     billIsActive.append(editBalanceActive);
 
     billEdit.addEventListener('click', () => {
+      if (clientBill.limit === null) {
+        editLimit.value = 0;
+      }
       if (!checkMoney.test(editBalance.value) || !checkMoney.test(editLimit.value)) {
         displayError('Balance or Limit', errorPlace);
         return;
@@ -126,8 +119,10 @@ export function renderBill(clientBill, place, bills, bank) {
         return;
       }
 
+      if (clientBill.limit !== null) {
+        clientBill.limit = editLimit.value;
+      }
       clientBill.bill = editBalance.value;
-      clientBill.limit = editLimit.value;
       clientBill.currency = editCurrency.value.toUpperCase();
       clientBill.expirationDate = editExpiration.value;
       clientBill.lastActiveDate = editActivity.value;

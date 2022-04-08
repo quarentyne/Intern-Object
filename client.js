@@ -6,18 +6,12 @@ import { displayError, checkName } from "./checking.js";
 
 export function renderClient(place, clientCard, bank) {
   const client = document.createElement('div');
-  client.style.background = 'white';
-  client.style.width = '45%';
-  client.style.maxHeight = '45%';
-  client.style.paddingLeft = '15px';
-  client.style.paddingRight = '15px';
-  client.style.border = 'solid black 2px'
+  client.classList.add('client');
   place.append(client);
 
   const clientNameLine = document.createElement('div');
+  clientNameLine.classList.add('client__header');
   client.append(clientNameLine);
-  clientNameLine.style.display = 'flex';
-  clientNameLine.style.justifyContent = 'space-between';
 
   const clientName = document.createElement('p');
   clientNameLine.append(clientName);
@@ -34,34 +28,26 @@ export function renderClient(place, clientCard, bank) {
   const clientDebetBills = document.createElement('ul');
   client.append(clientDebetBills);
   clientDebetBills.innerHTML = 'Debet Bills:';
-  clientDebetBills.style.margin = '0px';
-  clientDebetBills.style.padding = '0px';
 
   for (let debetBill of clientCard.debetBills) {
     const clientDebetBill = document.createElement('li');
-    clientDebetBill.style.marginLeft = '15px';
     clientDebetBill.innerHTML = renderBill(debetBill, clientDebetBills, clientCard.debetBills, bank);
   }
 
   const clientCreditBills = document.createElement('ul');
   client.append(clientCreditBills);
   clientCreditBills.innerHTML = 'Credit Bills:';
-  clientCreditBills.style.margin = '0px';
-  clientCreditBills.style.padding = '0px';
 
   for (let creditBill of clientCard.creditBills) {
     const clientCreditBill = document.createElement('li');
-    clientCreditBill.style.marginLeft = '15px';
     clientCreditBill.innerHTML = renderBill(creditBill, clientCreditBills, clientCard.creditBills, bank);
   }
 
   const clientFooter = document.createElement('div');
+  clientFooter.classList.add('client__footer');
   client.append(clientFooter);
-  clientFooter.style.display = 'flex';
-  clientFooter.style.justifyContent = 'space-between';
 
   const clientID = document.createElement('p');
-  clientID.style.marginRight = '25px';
   clientFooter.append(clientID);
   clientID.innerHTML = 'ID ' + clientCard.id;
 
@@ -72,8 +58,7 @@ export function renderClient(place, clientCard, bank) {
 
   const clientControl = document.createElement('div');
   client.append(clientControl);
-  clientControl.style.display = 'flex';
-  clientControl.style.justifyContent = 'space-between';
+  clientControl.classList.add('control');
 
   const clientEdit = document.createElement('button');
   clientEdit.innerHTML = 'Edit';

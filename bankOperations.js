@@ -5,19 +5,14 @@ import { renderMainContent, mainContent, errorPlace } from "./renderContent.js";
 
 export function renderSideContent(place, bank) {
   const operationBlock = document.createElement('div');
-  operationBlock.style.width = '100%';
+  operationBlock.classList.add('side-content');
   place.append(operationBlock);
 
   const createClient = document.createElement('div');
-  createClient.style.display = 'flex';
-  createClient.style.flexDirection = 'column';
-  createClient.style.border = '1px solid black';
-  createClient.style.padding = '5px';
-  createClient.style.marginBottom = '20px';
+  createClient.classList.add('side-content__block');
   operationBlock.append(createClient);
 
   const createClientDatas = document.createElement('div');
-  createClientDatas.style.display = 'flex';
   createClient.append(createClientDatas);
 
   const newClientName = document.createElement('input');
@@ -42,11 +37,7 @@ export function renderSideContent(place, bank) {
   createClient.append(newClientButton);
 
   const addBill = document.createElement('div');
-  addBill.style.display = 'flex';
-  addBill.style.flexDirection = 'column';
-  addBill.style.border = '1px solid black';
-  addBill.style.padding = '5px';
-  addBill.style.marginBottom = '20px';
+  addBill.classList.add('side-content__block');
   operationBlock.append(addBill);
 
   const addBillID = document.createElement('input');
@@ -102,11 +93,7 @@ export function renderSideContent(place, bank) {
   addBill.append(addBillButton);
 
   const calculateAmount = document.createElement('div');
-  calculateAmount.style.display = 'flex';
-  calculateAmount.style.flexDirection = 'column';
-  calculateAmount.style.border = '1px solid black';
-  calculateAmount.style.padding = '5px';
-  calculateAmount.style.marginBottom = '20px';
+  calculateAmount.classList.add('side-content__block');
   operationBlock.append(calculateAmount);
 
   const calculateAmountMenu = document.createElement('select');
@@ -133,7 +120,6 @@ export function renderSideContent(place, bank) {
   calculateAmountResult.innerHTML = '0$'
   calculateAmount.append(calculateAmountResult);
 
-  errorPlace.style.fontSize = '30px';
   operationBlock.append(errorPlace);
 
   newClientButton.addEventListener('click', () => {
@@ -154,6 +140,7 @@ export function renderSideContent(place, bank) {
   })
 
   addBillButton.addEventListener('click', () => {
+
     if (!checkID.test(addBillID.value)) {
       displayError('ID', errorPlace);
       return;
